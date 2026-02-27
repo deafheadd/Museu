@@ -11,8 +11,5 @@ export class UsuarioResponse {
   email: string = '';
 
   @Expose()
-  senha: string = '';
-
-  @Expose()
   ativo: boolean = true;
 }
