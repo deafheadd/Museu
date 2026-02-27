@@ -1,6 +1,6 @@
 export class Usuario {
-  id: number = 0;
-  nome: string = '';
+  idUsuario: number = 0;
+  nomeUsuario: string = '';
   email: string = '';
   senha: string = '';
   ativo: boolean = true;

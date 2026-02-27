@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { TABELA_USUARIO } from './tabela.usuario';
+import { UsuarioConverter } from '../dto/converter/usuario.converter';
 
 @Injectable()
 export class UsuarioService {
   listar() {
-    return 'Todos meus usuários';
+    return UsuarioConverter.toListarUsuarioResponse(TABELA_USUARIO);
   }
 
   listarPorId(id: number) {
