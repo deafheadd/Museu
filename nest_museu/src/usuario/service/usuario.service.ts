@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsuarioConverter } from '../dto/converter/usuario.converter';
-import { TABELA_USUARIO } from './tabela.usuario';
+import { UsuarioRequest } from '../dto/request/usuario.request';
 import { UsuarioResponse } from '../dto/response/usuario.response';
+import { TABELA_USUARIO } from './tabela.usuario';
 
 @Injectable()
 export class UsuarioService {
@@ -9,17 +10,40 @@ export class UsuarioService {
     return UsuarioConverter.toListarUsuarioResponse(TABELA_USUARIO);
   }
 
-  listarPorId(id: number): UsuarioResponse | null {
+  listarPorId(id: number): UsuarioResponse {
     const usuario = TABELA_USUARIO.find((usuario) => usuario.idUsuario === id);
-    return usuario ? UsuarioConverter.toUsuarioResponse(usuario) : null;
+
+    if (!usuario) {
+      throw new NotFoundException('Usuario não encontrado');
+    }
+
+    return UsuarioConverter.toUsuarioResponse(usuario);
   }
 
-  salvar() {
-    return 'salvando um usuario!';
+  salvar(usuarioRequest: UsuarioRequest): UsuarioResponse {
+    const id = TABELA_USUARIO.length + 1;
+
+    const usuario = UsuarioConverter.toUsuario(usuarioRequest);
+    usuario.idUsuario = id;
+
+    TABELA_USUARIO.push(usuario);
+
+    return UsuarioConverter.toUsuarioResponse(usuario);
   }
 
-  atualizar(id: number) {
-    return `atualizando um usuario com id: ${id}`;
+  atualizar(id: number, usuarioRequest: UsuarioRequest) {
+    const usuarioCadastrado = TABELA_USUARIO.find((usuario) => usuario.idUsuario === id);
+
+    if (!usuarioCadastrado) {
+      return null;
+    }
+
+    const usuario = UsuarioConverter.toUsuario(usuarioRequest);
+    usuario.idUsuario = id;
+
+    Object.assign(usuarioCadastrado, usuario);
+
+    return UsuarioConverter.toUsuarioResponse(usuarioCadastrado);
   }
 
   deletar(id: number) {

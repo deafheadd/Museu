@@ -4,5 +4,6 @@ export interface ApiResponse<T> {
   mensagem?: string | null;
   error?: string;
   path?: string;
+  metodo?: string;
   dados?: T | T[] | null;
 }
