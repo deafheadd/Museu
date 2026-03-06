@@ -25,21 +25,12 @@ export class UsuarioController {
   listarPorId(@Param('id') id: number, @Req() req: Request): ApiResponse<UsuarioResponse> {
     const response = this.usuarioService.listarPorId(id);
 
-    if (response) {
-      return ResponseBuilder.status<UsuarioResponse>(HttpStatus.OK)
-        .mensagem('Usuário encontrado')
-        .path(req.path)
-        .metodo(req.method)
-        .dados(response)
-        .build();
-    } else {
-      return ResponseBuilder.status<UsuarioResponse>(HttpStatus.NOT_FOUND)
-        .mensagem('Usuário não encontrado')
-        .path(req.path)
-        .metodo(req.method)
-        .error('Usuário com o ID especificado não existe')
-        .build();
-    }
+    return ResponseBuilder.status<UsuarioResponse>(HttpStatus.OK)
+      .mensagem('Usuário encontrado')
+      .path(req.path)
+      .metodo(req.method)
+      .dados(response)
+      .build();
   }
 
   @Post()
@@ -61,31 +52,18 @@ export class UsuarioController {
   ): ApiResponse<UsuarioResponse> {
     const response = this.usuarioService.atualizar(id, usuarioRequest);
 
-    if (response) {
-      return ResponseBuilder.status<UsuarioResponse>(HttpStatus.OK)
-        .mensagem('Usuário atualizado com sucesso')
-        .path(req.path)
-        .metodo(req.method)
-        .dados(response)
-        .build();
-    } else {
-      return ResponseBuilder.status<UsuarioResponse>(HttpStatus.NOT_FOUND)
-        .mensagem('Usuário não encontrado')
-        .path(req.path)
-        .metodo(req.method)
-        .error('Usuário com o ID especificado não existe')
-        .build();
-    }
+    return ResponseBuilder.status<UsuarioResponse>(HttpStatus.OK)
+      .mensagem('Usuário atualizado com sucesso')
+      .path(req.path)
+      .metodo(req.method)
+      .dados(response)
+      .build();
   }
 
   @Delete(':id')
   deletar(@Param('id') id: number, @Req() req: Request) {
     const response = this.usuarioService.deletar(id);
 
-    if (response) {
-      return ResponseBuilder.status(HttpStatus.OK).mensagem(response).path(req.path).metodo(req.method).build();
-    } else {
-      return ResponseBuilder.status(HttpStatus.NOT_FOUND).mensagem(response).path(req.path).metodo(req.method).build();
-    }
+    return ResponseBuilder.status(HttpStatus.OK).mensagem(response).path(req.path).metodo(req.method).build();
   }
 }
